@@ -9,3 +9,7 @@ export default defineConfig({
     site: 'https://clay-astro-theme.netlify.app',
     integrations: [sitemap(), sanity()],
 });
+
+sanity({
+  projectId: import.meta.env.SANITY_PROJECT_ID, // Is this name correct?
+})
