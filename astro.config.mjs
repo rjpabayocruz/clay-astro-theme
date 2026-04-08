@@ -16,4 +16,5 @@ export default defineConfig({
       useCdn: false, // for static builds
     }),
   ],
+  site: 'https://potscrys.vercel.app/',
 });
