@@ -13,6 +13,7 @@ export default defineConfig({
     sanity({
       projectId: "mxuj7pqe",
       dataset: "production",
+      apiVersion: "2024-04-21",
       useCdn: false, // for static builds
     }),
   ],
