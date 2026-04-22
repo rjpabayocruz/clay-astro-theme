@@ -1,6 +1,10 @@
 ---
 export const prerender = false;
 
+// Force the response headers to "No Cache"
+Astro.response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+
+
 import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
