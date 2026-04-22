@@ -1,17 +1,20 @@
 ---
+export const prerender = false;
+
 import type { SanityDocument } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 import { createImageUrlBuilder, type SanityImageSource } from "@sanity/image-url";
 import { PortableText } from "astro-portabletext";
 
-const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
-const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, Astro.params);
+const { slug } = Astro.params;
 
-export async function getStaticPaths(): Promise<{ params: { slug: string } }> {
-  const SLUGS_QUERY = `*[_type == "post" && defined(slug.current)]{
-    "params": {"slug": slug.current}
-  }`;
-  return await sanityClient.fetch(SLUGS_QUERY);
+// Modified fetch: Removed the third 'cache' argument that causes the TS error.
+// The 'useCdn: false' in your astro.config.mjs handles the freshness in SSR mode.
+const POST_QUERY = `*[_type == "post" && slug.current == $slug][0]`;
+const post = await sanityClient.fetch<SanityDocument>(POST_QUERY, { slug });
+
+if (!post) {
+  return Astro.redirect('/404');
 }
 
 const { projectId, dataset } = sanityClient.config();
@@ -19,6 +22,7 @@ const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? createImageUrlBuilder({ projectId, dataset }).image(source)
     : null;
+
 const postImageUrl = post.image
   ? urlFor(post.image)?.width(550).height(310).url()
   : null;
