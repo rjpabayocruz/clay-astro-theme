@@ -2,7 +2,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 import sanity from "@sanity/astro";
-
+//test something
 // https://astro.build/config
 export default defineConfig({
   vite: {
